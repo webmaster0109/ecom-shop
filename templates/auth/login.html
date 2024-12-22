@@ -1,0 +1,21 @@
+{% extends 'base/base.html' %}
+{% block title %}Login{% endblock %}
+    
+{% block content %}
+    
+<form id="loginForm">
+    {% csrf_token %}
+    <h1>Login</h1>
+    <p id="messageId"></p>
+    <label for="username">Username</label>
+    <input class="form-control" type="text" name="username" id="username">
+    <label for="password">Password</label>
+    <input class="form-control" type="password" name="password" id="password">
+    <button class="btn btn-danger mt-3 d-flex align-items-center" type="submit">
+        <span>Login</span> <span id="spinnerLoading" class="spinner-border text-light ms-2" role="status" style="display: none; font-size: 10px; width: 16px; height: 16px;"></span>
+    </button>
+</form>
+
+<script src="/media/js/login.js"></script>
+    
+{% endblock %}
