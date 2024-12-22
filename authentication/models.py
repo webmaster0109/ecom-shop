@@ -22,13 +22,16 @@ class Profile(models.Model):
 
     is_admin = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+    modified_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.user.username
 
     def get_full_name(self):
         return f'{self.user.first_name} {self.user.last_name}'
+    
+    def get_email(self):
+        return self.user.email
     
 
 class UserAddress(models.Model):
