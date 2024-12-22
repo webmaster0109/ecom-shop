@@ -134,6 +134,9 @@ def check_password_similiarity(new_password, old_password):
 
 def reset_password_page(request, token):
     profile_obj = Profile.objects.filter(forgot_password_token=token).first()
+    if not profile_obj:
+        JsonResponse({'status': 'error', 'message': 'Invalid token, request new one.'}, status=400)
+        return redirect('login-page')
     return render(request, template_name='auth/reset_password.html', 
                   context={'token': profile_obj.forgot_password_token, 'user_id': profile_obj.user.id})
 

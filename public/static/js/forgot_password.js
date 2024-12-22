@@ -33,6 +33,7 @@ async function forgotPassword(e) {
             message.style.color = 'red';
         }
         
+        
     } catch (error) {
         console.error('An error occurred:', error);
         message.style.color = 'red';
