@@ -36,6 +36,23 @@ def login_user(request):
         
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
 
+def register_user(request):
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            return JsonResponse({'status' : 'success', 'message': 'Already Logged In'})
+        
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        address = request.POST.get('address')
+
+
+def register_page(request):
+    if request.user.is_authenticated:
+        return redirect('homepage')
+    return render(request, template_name='auth/register.html')
+
 def logout_user(request):
     logout(request)
     return redirect('login-page')
