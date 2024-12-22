@@ -11,7 +11,6 @@ class Profile(models.Model):
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone = models.CharField(max_length=20, blank=True)
-    address = models.CharField(max_length=50, blank=True)
     profile_pic = models.ImageField(upload_to='profile_pics', blank=True)
     gender = models.CharField(max_length=10, blank=True, choices=GENDER_CHOICES, null=True)
     dob = models.DateField(null=True, blank=True)
@@ -27,3 +26,23 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    def get_full_name(self):
+        return f'{self.user.first_name} {self.user.last_name}'
+    
+
+class UserAddress(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
+    address = models.TextField(default='', blank=True, null=True)
+    city = models.CharField(max_length=50, blank=True, null=True)
+    state = models.CharField(max_length=50, blank=True, null=True)
+    country = models.CharField(max_length=50, blank=True, null=True)
+    zipcode = models.CharField(max_length=10, blank=True, null=True)
+    is_default = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.profile.user.username
+    
+    def get_full_address(self):
+        return f'{self.address}, {self.city}, {self.state}, {self.country}, {self.zipcode}'
+    
