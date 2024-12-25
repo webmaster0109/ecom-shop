@@ -24,21 +24,25 @@ def login_user(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        print(username, password)
-
         if not username or not password:
             return JsonResponse({'status' : 'error', 'message': 'All fields are required'}, status=400)
+        
+        try:
+            user_obj = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return JsonResponse({'status' : 'error', 'message': 'Account Does not exists.'}, status=401)
         
         user_obj = authenticate(request, username=username, password=password)
 
         if user_obj:
             user = Profile.objects.get(user=user_obj)
+            
             if not user.is_verified:
-                return JsonResponse({'status' : 'error', 'message': 'Account is not verified'}, status=400)
+                return JsonResponse({'status' : 'error', 'message': 'Account is not verified'}, status=401)
             login(request, user_obj)
             return JsonResponse({'status' : 'success', 'message': 'Login Successful'}, status=200)
         else:
-            return JsonResponse({'status' : 'error', 'message': 'Invalid Credentials'}, status=401)
+            return JsonResponse({'status' : 'error', 'message': 'Invalid Credentials'}, status=400)
         
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
 
@@ -106,21 +110,21 @@ def forgot_password(request):
             
             profile_obj = Profile.objects.get(user=user_obj)
             if not profile_obj.is_verified:
-                return JsonResponse({'status': 'error', 'message': 'Account is not verified. Please verify the account first'}, status=400)
+                return JsonResponse({'status': 'error', 'message': 'Account is not verified.'}, status=400)
             
             last_time_sent = profile_obj.modified_at
             if last_time_sent and (timezone.now() - last_time_sent) < timedelta(minutes=10) and profile_obj.forgot_password_token != None:
                 time_difference = (timezone.now() - last_time_sent)
                 time_left = timedelta(minutes=10) - time_difference
                 if time_left.seconds > 60:
-                    return JsonResponse({'status': 'error', 'message': f'Please wait for {time_left.seconds//60} minutes before sending another email'}, status=400)
+                    return JsonResponse({'status': 'error', 'message': f'Already sent link. Wait for {time_left.seconds//60} minutes.'}, status=400)
             
             token = str(uuid.uuid4())
             profile_obj.forgot_password_token = token
             profile_obj.modified_at = timezone.now()
             profile_obj.save()
             send_forgot_mail(request, profile_obj, token)
-            return JsonResponse({'status': 'success', 'message': 'Password reset successfully'}, status=200)
+            return JsonResponse({'status': 'success', 'message': 'Sent reset password link successfully'}, status=200)
         
     except Exception as e:
         return JsonResponse({'status': 'error', 'message': str(e)}, status=400)

@@ -1,6 +1,4 @@
 const logout = document.getElementById('userLogout');
-const logoutMessage = document.querySelector('#userMessageId');
-
 logout.addEventListener('click', logoutUser);
 
 async function logoutUser(e) {
@@ -14,19 +12,15 @@ async function logoutUser(e) {
         });
     
         if (response.ok) {
-            logoutMessage.innerHTML = 'You are logging out...';
-            logoutMessage.style.color = 'red';
+            createToast('Logging out...', 'Warning');
             setTimeout(() => {
                 window.location.replace('/account/login/');
             }, 2000);
         } else {
-            console.error('An error occurred:');
-            logoutMessage.innerHTML = 'Failed to logout. Please try again later.';
-            logoutMessage.style.color = 'red';
+            createToast('Failed to logout. Please try again later.', 'Error');
         }
     } catch (error) {
         console.error('An error occurred:', error);
-        logoutMessage.innerHTML = 'An unexpected error occurred. Please try again later.';
-        logoutMessage.style.color = 'red';
+        createToast('An unexpected error occurred.', 'Error');
     }
 }

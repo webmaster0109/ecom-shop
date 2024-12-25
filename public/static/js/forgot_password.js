@@ -1,5 +1,4 @@
 const forgotPasswordForm = document.querySelector('#forgotPasswordForm');
-const message = document.querySelector('#messageId');
 const loading = document.querySelector('#spinnerLoading');
 
 forgotPasswordForm.addEventListener('submit', forgotPassword);
@@ -23,25 +22,23 @@ async function forgotPassword(e) {
         const data = await res.json();
     
         if (res.ok) {
-            message.innerHTML = data.message;
-            message.style.color = 'green';
+            createToast(data.message, 'Success');
             setTimeout(() => {
                 window.location.replace('/account/login/');
             }, 2000);
         } else {
-            message.innerHTML = data.message;
-            message.style.color = 'red';
+            if (res.status === 400) {
+                createToast(data.message, 'Warning');
+            } else {
+                createToast(data.message, 'Error');
+            }
         }
         
         
     } catch (error) {
         console.error('An error occurred:', error);
-        message.style.color = 'red';
-        message.innerHTML = 'Something went wrong. Please try again later.';        
+        createToast('An unexpected error occurred.', 'Error');      
     } finally {
         loading.style.display = 'none';
-        setTimeout(() => {
-            message.innerHTML = '';
-        }, 3000);
     }
 }
