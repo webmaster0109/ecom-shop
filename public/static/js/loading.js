@@ -6,6 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 })
 
+window.addEventListener('pageshow', (event) => {
+    if (event.persisted) {
+        window.location.reload();
+    }
+})
+
 async function loadingPage(e, productLink) {
     e.preventDefault();
     const ahrefLink = productLink.getAttribute('href');
