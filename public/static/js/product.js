@@ -18,10 +18,17 @@ document.addEventListener('DOMContentLoaded', () => {
                         <img src="/media/${productFields.image}" alt="${productFields.name}" style="width: 150px; height: auto;">
                         <p>${productFields.description}</p>
                         <p>Price: $${productFields.price}</p>
-                        <a class="btn btn-danger" href="/product/${productFields.slug}/" target="_self">View Details</a>
+                        <a class="btn btn-danger" id="productID" href="/product/${productFields.slug}/">View Details</a>
                     `;
                     productContainer.appendChild(productElement);
                 });
+
+                productContainer.addEventListener('click', (e) => {
+                    if (e.target && e.target.matches('a#productID')) {
+                        loadingPage(e, e.target);
+                    }
+                });
+
             } else {
                 console.error('Failed to fetch products:', data.message);
                 createToast(data.message, 'Error');
