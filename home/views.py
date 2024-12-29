@@ -38,3 +38,6 @@ def product_detail(request, slug):
 def account_status(request):
     is_authenticated = request.user.is_authenticated
     return JsonResponse({'is_authenticated': is_authenticated})
+
+
+# secret_key = QwSscc8Ecu02QbLgEfAffGI7AAX1APUv

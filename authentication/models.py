@@ -19,6 +19,9 @@ class Profile(models.Model):
     verification_code = models.CharField(max_length=100, null=True, blank=True)
     is_verified = models.BooleanField(default=False, null=True, blank=True)
     forgot_password_token = models.CharField(max_length=100, null=True, blank=True)
+    
+    login_otp_code = models.CharField(max_length=10, null=True, blank=True)
+    is_login_verify = models.BooleanField(default=False)
 
     is_admin = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)

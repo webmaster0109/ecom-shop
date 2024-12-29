@@ -116,8 +116,9 @@ def forgot_password(request):
             if last_time_sent and (timezone.now() - last_time_sent) < timedelta(minutes=10) and profile_obj.forgot_password_token != None:
                 time_difference = (timezone.now() - last_time_sent)
                 time_left = timedelta(minutes=10) - time_difference
+                print(time_left.seconds)
                 if time_left.seconds > 60:
-                    return JsonResponse({'status': 'error', 'message': f'Already sent link. Wait for {time_left.seconds//60} minutes.'}, status=400)
+                    return JsonResponse({'status': 'error', 'message': f'Already sent link. Wait for {time_left.seconds//60} minutes.', 'time_left': time_left.seconds}, status=400)
             
             token = str(uuid.uuid4())
             profile_obj.forgot_password_token = token
