@@ -126,7 +126,7 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-from decouple import config
+# from decouple import config
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -135,5 +135,5 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'paulsandy321@gmail.com'  # Your Gmail address
 EMAIL_HOST_PASSWORD = 'qqkxhgkcqopevrqk'  # App password for Gmail
 
-ACCOUNT_SID = config('ACCOUNT_SID')
-ACCOUNT_TOKEN = config('ACCOUNT_TOKEN')
+ACCOUNT_SID = ""
+ACCOUNT_TOKEN = ""
